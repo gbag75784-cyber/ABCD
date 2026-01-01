@@ -9,11 +9,6 @@ local Window = Rayfield:CreateWindow({
     KeySystem = false
 })
 
-local MainTab = Window:CreateTab("🌎메인 탭🌏", nil)
-local CombatTab = Window:CreateTab("✨컴뱃 설정✨", nil)
-local VisualsTab = Window:CreateTab("🌊visuals", nil)
-local PlayerTab = Window:CreateTab("👨‍🦲플레이어", nil)
-
 local Camera = workspace.CurrentCamera
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -46,7 +41,11 @@ local Settings = {
     Noclip = false
 }
 
--- [ ESP 기능 구현 ]
+local MainTab = Window:CreateTab("🌎메인 탭🌏", nil)
+local CombatTab = Window:CreateTab("✨컴뱃 설정✨", nil)
+local VisualsTab = Window:CreateTab("🌊visuals", nil)
+local PlayerTab = Window:CreateTab("👨‍🦲플레이어", nil)
+
 local ESP_Objects = {}
 local function CreateESP(Player)
     if Player == LocalPlayer then return end
@@ -79,7 +78,7 @@ local function GetClosestPlayer()
     local Target = nil
     local Dist = Settings.FOVSize
     for _, v in pairs(Players:GetPlayers()) do
-        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") and v.Character.Humanoid.Health > 0 then
+        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
             if Settings.TeamCheck and v.Team == LocalPlayer.Team then continue end
             local Pos, OnScreen = Camera:WorldToViewportPoint(v.Character.Head.Position)
             if OnScreen then
@@ -102,7 +101,7 @@ RunService.RenderStepped:Connect(function()
 
     if Settings.Aimbot and UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
         local Target = GetClosestPlayer()
-        if Target then
+        if Target and Target.Character and Target.Character:FindFirstChild("Head") then
             Camera.CFrame = Camera.CFrame:Lerp(CFrame.new(Camera.CFrame.Position, Target.Character.Head.Position), 1/Settings.Smoothness)
         end
     end
@@ -128,7 +127,7 @@ RunService.RenderStepped:Connect(function()
     end
 
     for player, obj in pairs(ESP_Objects) do
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.Humanoid.Health > 0 then
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
             local HRP = player.Character.HumanoidRootPart
             local Pos, OnScreen = Camera:WorldToViewportPoint(HRP.Position)
             if OnScreen then
@@ -141,7 +140,9 @@ RunService.RenderStepped:Connect(function()
 
                 local Info = ""
                 if Settings.NameESP then Info = Info .. player.Name .. "\n" end
-                if Settings.DistanceESP then Info = Info .. math.floor((HRP.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude) .. "m\n" end
+                if Settings.DistanceESP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
+                    Info = Info .. math.floor((HRP.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude) .. "m\n" 
+                end
                 if Settings.HealthESP then Info = Info .. "HP: " .. math.floor(player.Character.Humanoid.Health) end
                 
                 if Info ~= "" then
@@ -159,7 +160,9 @@ end)
 UIS.InputBegan:Connect(function(input, gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.Space and Settings.InfJump then
-        LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
     end
     if input.UserInputType == Enum.UserInputType.MouseButton1 and Settings.ClickExplosion then
         local pos = Mouse.Hit.p
@@ -169,7 +172,7 @@ UIS.InputBegan:Connect(function(input, gp)
         ex.BlastPressure = 1000000 
         ex.Parent = workspace
         for _, v in pairs(Players:GetPlayers()) do
-            if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") then
+            if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") then
                 local d = (v.Character.HumanoidRootPart.Position - pos).Magnitude
                 if d <= Settings.ExplosionRadius then
                     v.Character.Humanoid.Health -= Settings.ExplosionDamage
@@ -185,7 +188,12 @@ MainTab:CreateButton({Name = "99 나이트 인 더 포레스트🎄", Callback =
 MainTab:CreateButton({Name = "브레인롯 훔치기🎁", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))() end})
 MainTab:CreateButton({Name = "아스널 스크립트✨", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/andrewdarkyyofficial/thunderclient/main/main.lua'))() end})
 MainTab:CreateButton({Name = "라이벌 스크립트🧨", Callback = function() loadstring(game:HttpGet('https://exploit.plus/Loader'))() end})
-MainTab:CreateButton({Name = "부대게임 테러 스크립트🎇", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/pudong8452/test_case_h/main/Ray_Free'))() 
+MainTab:CreateButton({
+    Name = "부대게임 테러 스크립트🎇", 
+    Callback = function() 
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/pudong8452/test_case_h/main/Ray_Free'))() 
+    end
+})
 
 CombatTab:CreateToggle({Name = "에임봇 (우클릭 고정)", CurrentValue = false, Flag = "AB", Callback = function(v) Settings.Aimbot = v end})
 CombatTab:CreateToggle({Name = "에임봇 팀 체크 (아군 제외)", CurrentValue = false, Flag = "TC", Callback = function(v) Settings.TeamCheck = v end})

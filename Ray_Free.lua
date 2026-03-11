@@ -1,10 +1,10 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-Name = "야기분조타",
+Name = "67",
 Icon = 0,
 LoadingTitle = "로딩 중...",
-LoadingSubtitle = "by 6️⃣7️⃣",
+LoadingSubtitle = "by 니엄마가만들었지누가만들었겠냐",
 ConfigurationSaving = {Enabled = false},
 KeySystem = false
 })
@@ -39,12 +39,13 @@ FlySpeedValue = 50,
 InfJump = false,
 HoldJump = false,
 Noclip = false,
+-- 추가 기능 데이터
 TargetBot = false,
 WallCheck = true,
 TargetPart = "Head",
+RainbowESP = false,
 CameraFOV = 70,
 SpinBot = false,
-SpinSpeed = 50,
 ThirdPerson = false,
 TPDistance = 10
 }
@@ -88,8 +89,8 @@ end
 
 local function GetTargetPart(Char)
     if Settings.TargetPart == "Random" then
-        local parts = {"Head", "UpperTorso", "LeftUpperLeg", "RightUpperLeg"}
-        return Char:FindFirstChild(parts[math.random(1, #parts)])
+        local p = {"Head", "UpperTorso", "LeftUpperLeg", "RightUpperLeg"}
+        return Char:FindFirstChild(p[math.random(1, #p)])
     elseif Settings.TargetPart == "Torso" then
         return Char:FindFirstChild("UpperTorso") or Char:FindFirstChild("Torso")
     elseif Settings.TargetPart == "Legs" then
@@ -126,6 +127,7 @@ return Target
 end
 
 RunService.RenderStepped:Connect(function()
+local RainbowColor = Color3.fromHSV(tick() % 5 / 5, 1, 1)
 FOVCircle.Visible = Settings.ShowFOV
 FOVCircle.Radius = Settings.FOVSize
 FOVCircle.Color = Settings.FOVColor
@@ -138,7 +140,7 @@ if Settings.ThirdPerson then
 end
 
 if Settings.SpinBot and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-    LocalPlayer.Character.HumanoidRootPart.CFrame *= CFrame.Angles(0, math.rad(Settings.SpinSpeed), 0)
+    LocalPlayer.Character.HumanoidRootPart.CFrame *= CFrame.Angles(0, math.rad(50), 0)
 end
 
 local Target = GetClosestPlayer()
@@ -148,9 +150,7 @@ if Target and Target.Character then
         if Settings.Aimbot and UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
             Camera.CFrame = Camera.CFrame:Lerp(CFrame.new(Camera.CFrame.Position, Part.Position), 1/Settings.Smoothness)
         end
-        if Settings.TargetBot then
-            mouse1click()
-        end
+        if Settings.TargetBot then mouse1click() end
     end
 end
 
@@ -179,12 +179,14 @@ if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and 
 local HRP = player.Character.HumanoidRootPart
 local Pos, OnScreen = Camera:WorldToViewportPoint(HRP.Position)
 if OnScreen then
+local Color = Settings.RainbowESP and RainbowColor or Settings.ESPColor
 if Settings.BoxESP then
 obj.Box.Size = Vector2.new(1500/Pos.Z, 2000/Pos.Z)
 obj.Box.Position = Vector2.new(Pos.X - obj.Box.Size.X/2, Pos.Y - obj.Box.Size.Y/2)
-obj.Box.Color = Settings.ESPColor
+obj.Box.Color = Color
 obj.Box.Visible = true
 else obj.Box.Visible = false end
+
 local Info = ""
 if Settings.NameESP then Info = Info .. player.Name .. "\n" end
 if Settings.DistanceESP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
@@ -194,7 +196,7 @@ if Settings.HealthESP then Info = Info .. "HP: " .. math.floor(player.Character.
 if Info ~= "" then
 obj.Text.Text = Info
 obj.Text.Position = Vector2.new(Pos.X, Pos.Y + (obj.Box.Size.Y/2))
-obj.Text.Color = Settings.ESPColor
+obj.Text.Color = Color
 obj.Text.Size = Settings.ESPTextSize
 obj.Text.Visible = true
 else obj.Text.Visible = false end
@@ -205,7 +207,6 @@ end)
 
 UIS.InputBegan:Connect(function(input, gp)
 if gp then return end
-if input.KeyCode == Enum.KeyCode.Q then Settings.SpinBot = not Settings.SpinBot end
 if input.KeyCode == Enum.KeyCode.Space and Settings.InfJump then
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
 LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
@@ -230,6 +231,11 @@ end
 end)
 
 MainTab:CreateButton({Name = "어드민 스크립트⚒", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end})
+MainTab:CreateButton({Name = "Argon Hub x🎃", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/AgentX771/ArgonHubX/main/Loader.lua"))() end})
+MainTab:CreateButton({Name = "99 나이트 인 더 포레스트🎄", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))() end})
+MainTab:CreateButton({Name = "브레인롯 훔치기🎁", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))() end})
+MainTab:CreateButton({Name = "아스널 스크립트✨", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/andrewdarkyyofficial/thunderclient/main/main.lua'))() end})
+MainTab:CreateButton({Name = "라이벌 스크립트🧨", Callback = function() loadstring(game:HttpGet('https://exploit.plus/Loader'))() end})
 MainTab:CreateButton({Name = "부대게임 테러 스크립트🎇", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/pudong8452/test_case_h/main/Ray_Free'))() end})
 
 CombatTab:CreateToggle({Name = "에임봇 (우클릭 고정)", CurrentValue = false, Flag = "AB", Callback = function(v) Settings.Aimbot = v end})
@@ -242,19 +248,26 @@ CombatTab:CreateSlider({Name = "FOV 크기", Range = {0, 1000}, Increment = 10, 
 CombatTab:CreateSlider({Name = "에임 부드러움", Range = {1, 20}, Increment = 1, CurrentValue = 1, Flag = "AS", Callback = function(v) Settings.Smoothness = v end})
 CombatTab:CreateColorPicker({Name = "FOV 색상", Color = Color3.fromRGB(255, 0, 0), Flag = "FC", Callback = function(v) Settings.FOVColor = v end})
 CombatTab:CreateToggle({Name = "클릭 시 폭발", CurrentValue = false, Flag = "CE", Callback = function(v) Settings.ClickExplosion = v end})
+CombatTab:CreateSlider({Name = "폭발 범위", Range = {0, 100}, Increment = 1, CurrentValue = 15, Flag = "ER", Callback = function(v) Settings.ExplosionRadius = v end})
+CombatTab:CreateSlider({Name = "폭발 데미지", Range = {0, 100}, Increment = 1, CurrentValue = 100, Flag = "ED", Callback = function(v) Settings.ExplosionDamage = v end})
 
 VisualsTab:CreateToggle({Name = "박스 ESP", CurrentValue = false, Flag = "VB", Callback = function(v) Settings.BoxESP = v end})
 VisualsTab:CreateToggle({Name = "이름 ESP", CurrentValue = false, Flag = "VN", Callback = function(v) Settings.NameESP = v end})
 VisualsTab:CreateToggle({Name = "거리 ESP", CurrentValue = false, Flag = "VD", Callback = function(v) Settings.DistanceESP = v end})
 VisualsTab:CreateToggle({Name = "체력 ESP", CurrentValue = false, Flag = "VH", Callback = function(v) Settings.HealthESP = v end})
+VisualsTab:CreateToggle({Name = "무지개 ESP", CurrentValue = false, Callback = function(v) Settings.RainbowESP = v end})
+VisualsTab:CreateSlider({Name = "텍스트 크기", Range = {10, 30}, Increment = 1, CurrentValue = 16, Flag = "VS", Callback = function(v) Settings.ESPTextSize = v end})
 VisualsTab:CreateColorPicker({Name = "ESP 색상", Color = Color3.fromRGB(255, 0, 0), Flag = "VC", Callback = function(v) Settings.ESPColor = v end})
 
 PlayerTab:CreateSlider({Name = "줌 조절 (FOV)", Range = {1, 120}, Increment = 1, CurrentValue = 70, Callback = function(v) Settings.CameraFOV = v end})
-PlayerTab:CreateToggle({Name = "스핀 봇 (Q 토글)", CurrentValue = false, Callback = function(v) Settings.SpinBot = v end})
+PlayerTab:CreateToggle({Name = "스핀 봇", CurrentValue = false, Callback = function(v) Settings.SpinBot = v end})
 PlayerTab:CreateToggle({Name = "강제 3인칭", CurrentValue = false, Callback = function(v) Settings.ThirdPerson = v end})
 PlayerTab:CreateToggle({Name = "이동속도 활성화", CurrentValue = false, Flag = "WSE", Callback = function(v) Settings.WalkSpeedEnabled = v end})
 PlayerTab:CreateSlider({Name = "속도 값", Range = {16, 500}, Increment = 1, CurrentValue = 50, Flag = "WSV", Callback = function(v) Settings.WalkSpeedValue = v end})
+PlayerTab:CreateToggle({Name = "플라이 (Fly)", CurrentValue = false, Flag = "FE", Callback = function(v) Settings.FlyEnabled = v end})
+PlayerTab:CreateSlider({Name = "비행 속도", Range = {0, 500}, Increment = 1, CurrentValue = 54, Flag = "FSV", Callback = function(v) Settings.FlySpeedValue = v end})
 PlayerTab:CreateToggle({Name = "무한 점프", CurrentValue = false, Flag = "IJ", Callback = function(v) Settings.InfJump = v end})
+PlayerTab:CreateToggle({Name = "점프 유지 (Hold Space)", CurrentValue = false, Flag = "HJ", Callback = function(v) Settings.HoldJump = v end})
 PlayerTab:CreateToggle({Name = "벽 뚫기 (Noclip)", CurrentValue = false, Flag = "NC", Callback = function(v) Settings.Noclip = v end})
 
 Rayfield:LoadConfiguration()

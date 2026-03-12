@@ -1,12 +1,24 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-Name = "67",
-Icon = 0,
-LoadingTitle = "로딩 중...",
-LoadingSubtitle = "by 니엄마가만들었지누가만들었겠냐",
-ConfigurationSaving = {Enabled = false},
-KeySystem = false
+    Name = "야기분조타",
+    Icon = 0,
+    LoadingTitle = "6️⃣7️⃣",
+    LoadingSubtitle = "내가안만들었어니가만들었겠지뭐하냐제발",
+    ConfigurationSaving = {Enabled = true, Folder = "HeadsUp_Config"},
+    KeySystem = false,
+    Theme = {
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Background = Color3.fromRGB(15, 15, 15),
+        Topbar = Color3.fromRGB(20, 20, 20),
+        Shadow = Color3.fromRGB(0, 0, 0),
+        Accent = Color3.fromRGB(0, 255, 170),
+        ElementBackground = Color3.fromRGB(25, 25, 25),
+        ElementBorder = Color3.fromRGB(35, 35, 35),
+        ElementTextColor = Color3.fromRGB(220, 220, 220),
+        SelectedElementBackground = Color3.fromRGB(0, 255, 170),
+        SelectedElementTextColor = Color3.fromRGB(0, 0, 0)
+    }
 })
 
 local Camera = workspace.CurrentCamera
@@ -14,260 +26,149 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local Mouse = LocalPlayer:GetMouse()
 
 local Settings = {
-ClickExplosion = false,
-ExplosionRadius = 15,
-ExplosionDamage = 100,
-Aimbot = false,
-TeamCheck = false,
-ShowFOV = false,
-FOVSize = 500,
-Smoothness = 1,
-FOVColor = Color3.fromRGB(255, 0, 0),
-BoxESP = false,
-NameESP = false,
-DistanceESP = false,
-HealthESP = false,
-ESPTextSize = 16,
-ESPColor = Color3.fromRGB(255, 0, 0),
-WalkSpeedEnabled = false,
-WalkSpeedValue = 16,
-FlyEnabled = false,
-FlySpeedValue = 50,
-InfJump = false,
-HoldJump = false,
-Noclip = false,
--- 추가 기능 데이터
-TargetBot = false,
-WallCheck = true,
-TargetPart = "Head",
-RainbowESP = false,
-CameraFOV = 70,
-SpinBot = false,
-ThirdPerson = false,
-TPDistance = 10
+    AimEnabled = false, HumanMethod = "Normal", HumanSpeed = 16, HumanRange = 18,
+    ShowRange = false, ADSRange = false, Range = 100, Speed = 5,
+    SilentEnabled = false, VisRotation = false, Invert = false, SilentShowRange = false, SilentADSRange = false,
+    HitChance = 100, VerticalOffset = 0.3, SilentRange = 100, OriginScan = false,
+    TargetOffsetY = 0, OriginOffsetY = 0, OriginOffsetZ = 0, OriginScanRange = 5,
+    TriggerEnabled = false, TriggerDelay = 50, TriggerRange = 5,
+    VisibleCheck = false, Prediction = false, Multiplier = 2, Hitpart = "Head", TargetTracer = false,
+    BoxESP = false, NameESP = false, DistanceESP = false, HealthESP = false, Chams = false, ESPVisCheck = false,
+    ArmChams = false, WeaponChams = false, NoSleeves = false,
+    ArmMat = "ForceField", WeaponMat = "ForceField", ViewmodelType = "Default",
+    PosChanger = false, PosX = 2, PosY = 2, PosZ = 2,
+    ForceFOV = false, FOVValue = 10, BulletTracers = false, EnemyTracers = false, TracerLife = 2,
+    Hitmarkers = false, HitmarkerLife = 2, ColorCorr = false, Saturation = 2, Contrast = 2,
+    AmbientMod = false, ClockMod = false, ClockTime = 2,
+    Crosshair = false, Outline = false, OnEnemy = false, Spin = false, SpinSpeed = 5, CrossSize = 8, CrossGap = 8,
+    Hitsounds = false, HitNotif = false, HitsoundType = "Osu", Volume = 1,
+    BunnyHop = false, WalkSpeedEnabled = false, SpeedValue = 50
 }
 
-local MainTab = Window:CreateTab("🌎메인 탭🌏", nil)
-local CombatTab = Window:CreateTab("✨컴뱃 설정✨", nil)
-local VisualsTab = Window:CreateTab("🌊visuals", nil)
-local PlayerTab = Window:CreateTab("👨‍🦲플레이어", nil)
-
-local ESP_Objects = {}
-local function CreateESP(Player)
-if Player == LocalPlayer then return end
-local Box = Drawing.new("Square")
-Box.Thickness = 1
-Box.Visible = false
-local Text = Drawing.new("Text")
-Text.Center = true
-Text.Outline = true
-Text.Visible = false
-ESP_Objects[Player] = {Box = Box, Text = Text}
-end
-
-for _, p in pairs(Players:GetPlayers()) do CreateESP(p) end
-Players.PlayerAdded:Connect(CreateESP)
-Players.PlayerRemoving:Connect(function(p)
-if ESP_Objects[p] then
-ESP_Objects[p].Box:Remove()
-ESP_Objects[p].Text:Remove()
-ESP_Objects[p] = nil
-end
+task.spawn(function()
+    while task.wait(0.45) do
+        local ParticlePart = Instance.new("Part")
+        ParticlePart.Name = "UI_Particle"
+        ParticlePart.Parent = workspace.CurrentCamera
+        ParticlePart.Transparency = 1
+        ParticlePart.CanCollide = false
+        ParticlePart.Anchored = true
+        local CameraCFrame = workspace.CurrentCamera.CFrame
+        local RandomPos = CameraCFrame * CFrame.new(math.random(-20, 20), 15, -math.random(10, 30))
+        ParticlePart.CFrame = RandomPos
+        local Attachment = Instance.new("Attachment", ParticlePart)
+        local Particle = Instance.new("ParticleEmitter", Attachment)
+        Particle.Texture = "rbxassetid://242138210"
+        Particle.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
+        Particle.Size = NumberSequence.new(0.1, 0.3)
+        Particle.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.2, 0), NumberSequenceKeypoint.new(0.8, 0), NumberSequenceKeypoint.new(1, 1)})
+        Particle.Lifetime = NumberRange.new(2, 4)
+        Particle.Speed = NumberRange.new(5, 10)
+        Particle.EmissionDirection = Enum.NormalId.Bottom
+        task.delay(5, function() ParticlePart:Destroy() end)
+    end
 end)
 
-local function IsVisible(Part)
-    if not Settings.WallCheck then return true end
-    local RaycastP = RaycastParams.new()
-    RaycastP.FilterDescendantsInstances = {LocalPlayer.Character, Camera}
-    RaycastP.FilterType = Enum.RaycastFilterType.Blacklist
-    local Result = workspace:Raycast(Camera.CFrame.Position, Part.Position - Camera.CFrame.Position, RaycastP)
-    return Result == nil or Result.Instance:IsDescendantOf(Part.Parent)
-end
+local CombatTab = Window:CreateTab("컴뱃", nil)
+CombatTab:CreateSection("Aim Assist")
+CombatTab:CreateToggle({Name = "활성화", CurrentValue = false, Callback = function(v) Settings.AimEnabled = v end})
+CombatTab:CreateDropdown({Name = "인간화 방법", Options = {"Normal", "Smooth", "Legit"}, CurrentOption = "Normal", Callback = function(v) Settings.HumanMethod = v end})
+CombatTab:CreateSlider({Name = "인간화 속도", Range = {1, 30}, Increment = 1, CurrentValue = 16, Callback = function(v) Settings.HumanSpeed = v end})
+CombatTab:CreateSlider({Name = "인간화 범위", Range = {1, 30}, Increment = 1, CurrentValue = 18, Callback = function(v) Settings.HumanRange = v end})
+CombatTab:CreateToggle({Name = "범위 표시", CurrentValue = false, Callback = function(v) Settings.ShowRange = v end})
+CombatTab:CreateToggle({Name = "ADS 범위", CurrentValue = false, Callback = function(v) Settings.ADSRange = v end})
+CombatTab:CreateSlider({Name = "범위", Range = {1, 1000}, Increment = 10, CurrentValue = 100, Callback = function(v) Settings.Range = v end})
+CombatTab:CreateSlider({Name = "속도", Range = {1, 50}, Increment = 1, CurrentValue = 5, Callback = function(v) Settings.Speed = v end})
+CombatTab:CreateSection("Silent Aim")
+CombatTab:CreateToggle({Name = "활성화", CurrentValue = false, Callback = function(v) Settings.SilentEnabled = v end})
+CombatTab:CreateToggle({Name = "회전 시각화", CurrentValue = false, Callback = function(v) Settings.VisRotation = v end})
+CombatTab:CreateToggle({Name = "반전", CurrentValue = false, Callback = function(v) Settings.Invert = v end})
+CombatTab:CreateToggle({Name = "범위 표시", CurrentValue = false, Callback = function(v) Settings.SilentShowRange = v end})
+CombatTab:CreateSlider({Name = "명중률", Range = {0, 100}, Increment = 1, CurrentValue = 100, Callback = function(v) Settings.HitChance = v end})
+CombatTab:CreateSlider({Name = "수직 오프셋", Range = {0, 10}, Increment = 0.1, CurrentValue = 0.3, Callback = function(v) Settings.VerticalOffset = v end})
+CombatTab:CreateSlider({Name = "범위", Range = {1, 1000}, Increment = 10, CurrentValue = 100, Callback = function(v) Settings.SilentRange = v end})
+CombatTab:CreateToggle({Name = "오리진 스캔", CurrentValue = false, Callback = function(v) Settings.OriginScan = v end})
+CombatTab:CreateSlider({Name = "타겟 오프셋 Y", Range = {0, 10}, Increment = 1, CurrentValue = 0, Callback = function(v) Settings.TargetOffsetY = v end})
+CombatTab:CreateSlider({Name = "오리진 오프셋 Y", Range = {0, 10}, Increment = 1, CurrentValue = 0, Callback = function(v) Settings.OriginOffsetY = v end})
+CombatTab:CreateSlider({Name = "오리진 오프셋 Z", Range = {0, 10}, Increment = 1, CurrentValue = 0, Callback = function(v) Settings.OriginOffsetZ = v end})
+CombatTab:CreateSlider({Name = "오리진 스캔 범위", Range = {1, 10}, Increment = 1, CurrentValue = 5, Callback = function(v) Settings.OriginScanRange = v end})
+CombatTab:CreateSection("Other")
+CombatTab:CreateToggle({Name = "가시성 체크", CurrentValue = false, Callback = function(v) Settings.VisibleCheck = v end})
+CombatTab:CreateToggle({Name = "예측 (Prediction)", CurrentValue = false, Callback = function(v) Settings.Prediction = v end})
+CombatTab:CreateSlider({Name = "배율 (Multiplier)", Range = {1, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.Multiplier = v end})
+CombatTab:CreateDropdown({Name = "타겟 부위", Options = {"Head", "Torso", "Random"}, CurrentOption = "Head", Callback = function(v) Settings.Hitpart = v end})
+CombatTab:CreateToggle({Name = "타겟 트레이서", CurrentValue = false, Callback = function(v) Settings.TargetTracer = v end})
+CombatTab:CreateSection("Triggerbot")
+CombatTab:CreateToggle({Name = "활성화", CurrentValue = false, Callback = function(v) Settings.TriggerEnabled = v end})
+CombatTab:CreateSlider({Name = "지연 시간", Range = {0, 200}, Increment = 1, CurrentValue = 50, Callback = function(v) Settings.TriggerDelay = v end})
+CombatTab:CreateSlider({Name = "범위", Range = {1, 30}, Increment = 1, CurrentValue = 5, Callback = function(v) Settings.TriggerRange = v end})
 
-local function GetTargetPart(Char)
-    if Settings.TargetPart == "Random" then
-        local p = {"Head", "UpperTorso", "LeftUpperLeg", "RightUpperLeg"}
-        return Char:FindFirstChild(p[math.random(1, #p)])
-    elseif Settings.TargetPart == "Torso" then
-        return Char:FindFirstChild("UpperTorso") or Char:FindFirstChild("Torso")
-    elseif Settings.TargetPart == "Legs" then
-        return Char:FindFirstChild("LeftUpperLeg") or Char:FindFirstChild("LeftLeg")
-    end
-    return Char:FindFirstChild("Head")
-end
+local VisualsTab = Window:CreateTab("비주얼", nil)
+VisualsTab:CreateSection("Players")
+VisualsTab:CreateToggle({Name = "박스 ESP", CurrentValue = false, Callback = function(v) Settings.BoxESP = v end})
+VisualsTab:CreateToggle({Name = "이름 ESP", CurrentValue = false, Callback = function(v) Settings.NameESP = v end})
+VisualsTab:CreateToggle({Name = "거리 ESP", CurrentValue = false, Callback = function(v) Settings.DistanceESP = v end})
+VisualsTab:CreateToggle({Name = "체력 ESP", CurrentValue = false, Callback = function(v) Settings.HealthESP = v end})
+VisualsTab:CreateToggle({Name = "챔스 (Chams)", CurrentValue = false, Callback = function(v) Settings.Chams = v end})
+VisualsTab:CreateToggle({Name = "가시성 체크", CurrentValue = false, Callback = function(v) Settings.ESPVisCheck = v end})
+VisualsTab:CreateSection("Viewmodel")
+VisualsTab:CreateToggle({Name = "팔 챔스", CurrentValue = false, Callback = function(v) Settings.ArmChams = v end})
+VisualsTab:CreateToggle({Name = "무기 챔스", CurrentValue = false, Callback = function(v) Settings.WeaponChams = v end})
+VisualsTab:CreateToggle({Name = "소매 제거", CurrentValue = false, Callback = function(v) Settings.NoSleeves = v end})
+VisualsTab:CreateDropdown({Name = "팔 재질", Options = {"ForceField", "Neon", "Plastic", "Glass"}, CurrentOption = "ForceField", Callback = function(v) Settings.ArmMat = v end})
+VisualsTab:CreateDropdown({Name = "무기 재질", Options = {"ForceField", "Neon", "Plastic", "Glass"}, CurrentOption = "ForceField", Callback = function(v) Settings.WeaponMat = v end})
+VisualsTab:CreateToggle({Name = "위치 변경기", CurrentValue = false, Callback = function(v) Settings.PosChanger = v end})
+VisualsTab:CreateSlider({Name = "X", Range = {0, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.PosX = v end})
+VisualsTab:CreateSlider({Name = "Y", Range = {0, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.PosY = v end})
+VisualsTab:CreateSlider({Name = "Z", Range = {0, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.PosZ = v end})
+VisualsTab:CreateSection("World")
+VisualsTab:CreateToggle({Name = "FOV 강제 고정", CurrentValue = false, Callback = function(v) Settings.ForceFOV = v end})
+VisualsTab:CreateSlider({Name = "FOV 값", Range = {1, 120}, Increment = 1, CurrentValue = 10, Callback = function(v) Settings.FOVValue = v end})
+VisualsTab:CreateToggle({Name = "탄궤적 표시", CurrentValue = false, Callback = function(v) Settings.BulletTracers = v end})
+VisualsTab:CreateSlider({Name = "지속 시간", Range = {1, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.TracerLife = v end})
+VisualsTab:CreateToggle({Name = "히트마커", CurrentValue = false, Callback = function(v) Settings.Hitmarkers = v end})
+VisualsTab:CreateToggle({Name = "색상 보정", CurrentValue = false, Callback = function(v) Settings.ColorCorr = v end})
+VisualsTab:CreateSlider({Name = "채도", Range = {0, 10}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.Saturation = v end})
+VisualsTab:CreateSlider({Name = "대비", Range = {0, 14}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.Contrast = v end})
+VisualsTab:CreateToggle({Name = "시간 변조", CurrentValue = false, Callback = function(v) Settings.ClockMod = v end})
+VisualsTab:CreateSlider({Name = "시간", Range = {0, 14}, Increment = 1, CurrentValue = 2, Callback = function(v) Settings.ClockTime = v end})
+VisualsTab:CreateSection("Crosshair")
+VisualsTab:CreateToggle({Name = "조준점 표시", CurrentValue = false, Callback = function(v) Settings.Crosshair = v end})
+VisualsTab:CreateToggle({Name = "외곽선", CurrentValue = false, Callback = function(v) Settings.Outline = v end})
+VisualsTab:CreateToggle({Name = "회전 조준점", CurrentValue = false, Callback = function(v) Settings.Spin = v end})
+VisualsTab:CreateSlider({Name = "크기", Range = {1, 20}, Increment = 1, CurrentValue = 8, Callback = function(v) Settings.CrossSize = v end})
+VisualsTab:CreateSlider({Name = "간격", Range = {1, 30}, Increment = 1, CurrentValue = 8, Callback = function(v) Settings.CrossGap = v end})
+VisualsTab:CreateSection("Hitsounds")
+VisualsTab:CreateToggle({Name = "히트사운드", CurrentValue = false, Callback = function(v) Settings.Hitsounds = v end})
+VisualsTab:CreateDropdown({Name = "사운드 선택", Options = {"Osu", "Rust", "Call of Duty"}, CurrentOption = "Osu", Callback = function(v) Settings.HitsoundType = v end})
+VisualsTab:CreateSlider({Name = "음량", Range = {0, 10}, Increment = 1, CurrentValue = 1, Callback = function(v) Settings.Volume = v end})
 
-local FOVCircle = Drawing.new("Circle")
-FOVCircle.Thickness = 2
-FOVCircle.NumSides = 60
-FOVCircle.Visible = false
+local PlayerTab = Window:CreateTab("플레이어", nil)
+PlayerTab:CreateSection("Character")
+PlayerTab:CreateToggle({Name = "버니합", CurrentValue = false, Callback = function(v) Settings.BunnyHop = v end})
+PlayerTab:CreateToggle({Name = "이동속도 활성화", CurrentValue = false, Callback = function(v) Settings.WalkSpeedEnabled = v end})
+PlayerTab:CreateSlider({Name = "속도", Range = {1, 50}, Increment = 1, CurrentValue = 50, Callback = function(v) Settings.SpeedValue = v end})
 
-local function GetClosestPlayer()
-local Target = nil
-local Dist = Settings.FOVSize
-for _, v in pairs(Players:GetPlayers()) do
-if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
-if Settings.TeamCheck and v.Team == LocalPlayer.Team then continue end
-local Part = GetTargetPart(v.Character)
-if Part then
-local Pos, OnScreen = Camera:WorldToViewportPoint(Part.Position)
-if OnScreen and IsVisible(Part) then
-local MouseDist = (Vector2.new(UIS:GetMouseLocation().X, UIS:GetMouseLocation().Y) - Vector2.new(Pos.X, Pos.Y)).Magnitude
-if MouseDist < Dist then
-Dist = MouseDist
-Target = v
-end
-end
-end
-end
-end
-return Target
-end
+local ConfigTab = Window:CreateTab("설정", nil)
+ConfigTab:CreateSection("Menu")
+ConfigTab:CreateToggle({Name = "워터마크 표시", CurrentValue = false, Callback = function(v) end})
+ConfigTab:CreateToggle({Name = "키바인드 표시", CurrentValue = true, Callback = function(v) end})
+ConfigTab:CreateKeybind({Name = "메뉴 단축키", CurrentKeybind = "End", HoldToInteract = false, Callback = function() Rayfield:Toggle() end})
+ConfigTab:CreateButton({Name = "언로드 (Unload)", Callback = function() Rayfield:Destroy() end})
+ConfigTab:CreateSection("Configuration")
+ConfigTab:CreateInput({Name = "설정 이름", PlaceholderText = "이름 입력", Callback = function(t) end})
+ConfigTab:CreateButton({Name = "설정 생성", Callback = function() Rayfield:SaveConfiguration() end})
 
 RunService.RenderStepped:Connect(function()
-local RainbowColor = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-FOVCircle.Visible = Settings.ShowFOV
-FOVCircle.Radius = Settings.FOVSize
-FOVCircle.Color = Settings.FOVColor
-FOVCircle.Position = UIS:GetMouseLocation()
-
-Camera.FieldOfView = Settings.CameraFOV
-if Settings.ThirdPerson then
-    LocalPlayer.CameraMode = Enum.CameraMode.Classic
-    LocalPlayer.CameraMaxZoomDistance, LocalPlayer.CameraMinZoomDistance = Settings.TPDistance, Settings.TPDistance
-end
-
-if Settings.SpinBot and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-    LocalPlayer.Character.HumanoidRootPart.CFrame *= CFrame.Angles(0, math.rad(50), 0)
-end
-
-local Target = GetClosestPlayer()
-if Target and Target.Character then
-    local Part = GetTargetPart(Target.Character)
-    if Part then
-        if Settings.Aimbot and UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
-            Camera.CFrame = Camera.CFrame:Lerp(CFrame.new(Camera.CFrame.Position, Part.Position), 1/Settings.Smoothness)
-        end
-        if Settings.TargetBot then mouse1click() end
+    if Settings.ForceFOV then Camera.FieldOfView = Settings.FOVValue end
+    if Settings.WalkSpeedEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        LocalPlayer.Character.Humanoid.WalkSpeed = Settings.SpeedValue
     end
-end
-
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
-local Hum = LocalPlayer.Character.Humanoid
-local Root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-Hum.WalkSpeed = Settings.WalkSpeedEnabled and Settings.WalkSpeedValue or 16
-if Settings.HoldJump and UIS:IsKeyDown(Enum.KeyCode.Space) then Hum.Jump = true end
-if Settings.Noclip then
-for _, v in pairs(LocalPlayer.Character:GetDescendants()) do
-if v:IsA("BasePart") then v.CanCollide = false end
-end
-end
-if Settings.FlyEnabled and Root then
-local Velocity = Vector3.new(0, 0.1, 0)
-if UIS:IsKeyDown(Enum.KeyCode.W) then Velocity = Velocity + (Camera.CFrame.LookVector * Settings.FlySpeedValue) end
-if UIS:IsKeyDown(Enum.KeyCode.S) then Velocity = Velocity - (Camera.CFrame.LookVector * Settings.FlySpeedValue) end
-if UIS:IsKeyDown(Enum.KeyCode.A) then Velocity = Velocity - (Camera.CFrame.RightVector * Settings.FlySpeedValue) end
-if UIS:IsKeyDown(Enum.KeyCode.D) then Velocity = Velocity + (Camera.CFrame.RightVector * Settings.FlySpeedValue) end
-Root.Velocity = Velocity
-end
-end
-
-for player, obj in pairs(ESP_Objects) do
-if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-local HRP = player.Character.HumanoidRootPart
-local Pos, OnScreen = Camera:WorldToViewportPoint(HRP.Position)
-if OnScreen then
-local Color = Settings.RainbowESP and RainbowColor or Settings.ESPColor
-if Settings.BoxESP then
-obj.Box.Size = Vector2.new(1500/Pos.Z, 2000/Pos.Z)
-obj.Box.Position = Vector2.new(Pos.X - obj.Box.Size.X/2, Pos.Y - obj.Box.Size.Y/2)
-obj.Box.Color = Color
-obj.Box.Visible = true
-else obj.Box.Visible = false end
-
-local Info = ""
-if Settings.NameESP then Info = Info .. player.Name .. "\n" end
-if Settings.DistanceESP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-Info = Info .. math.floor((HRP.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude) .. "m\n"
-end
-if Settings.HealthESP then Info = Info .. "HP: " .. math.floor(player.Character.Humanoid.Health) end
-if Info ~= "" then
-obj.Text.Text = Info
-obj.Text.Position = Vector2.new(Pos.X, Pos.Y + (obj.Box.Size.Y/2))
-obj.Text.Color = Color
-obj.Text.Size = Settings.ESPTextSize
-obj.Text.Visible = true
-else obj.Text.Visible = false end
-else obj.Box.Visible = false obj.Text.Visible = false end
-else obj.Box.Visible = false obj.Text.Visible = false end
-end
+    if Settings.BunnyHop and UIS:IsKeyDown(Enum.KeyCode.Space) and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        LocalPlayer.Character.Humanoid.Jump = true
+    end
 end)
-
-UIS.InputBegan:Connect(function(input, gp)
-if gp then return end
-if input.KeyCode == Enum.KeyCode.Space and Settings.InfJump then
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
-LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-end
-end
-if input.UserInputType == Enum.UserInputType.MouseButton1 and Settings.ClickExplosion then
-local pos = Mouse.Hit.p
-local ex = Instance.new("Explosion")
-ex.Position = pos
-ex.BlastRadius = Settings.ExplosionRadius
-ex.BlastPressure = 1000000
-ex.Parent = workspace
-for _, v in pairs(Players:GetPlayers()) do
-if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") then
-local d = (v.Character.HumanoidRootPart.Position - pos).Magnitude
-if d <= Settings.ExplosionRadius then
-v.Character.Humanoid.Health -= Settings.ExplosionDamage
-end
-end
-end
-end
-end)
-
-MainTab:CreateButton({Name = "어드민 스크립트⚒", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end})
-MainTab:CreateButton({Name = "Argon Hub x🎃", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/AgentX771/ArgonHubX/main/Loader.lua"))() end})
-MainTab:CreateButton({Name = "99 나이트 인 더 포레스트🎄", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua", true))() end})
-MainTab:CreateButton({Name = "브레인롯 훔치기🎁", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Ninja10908/S4/refs/heads/main/Kurdhub"))() end})
-MainTab:CreateButton({Name = "아스널 스크립트✨", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/andrewdarkyyofficial/thunderclient/main/main.lua'))() end})
-MainTab:CreateButton({Name = "라이벌 스크립트🧨", Callback = function() loadstring(game:HttpGet('https://exploit.plus/Loader'))() end})
-MainTab:CreateButton({Name = "부대게임 테러 스크립트🎇", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/pudong8452/test_case_h/main/Ray_Free'))() end})
-
-CombatTab:CreateToggle({Name = "에임봇 (우클릭 고정)", CurrentValue = false, Flag = "AB", Callback = function(v) Settings.Aimbot = v end})
-CombatTab:CreateToggle({Name = "타겟 봇 (자동 사격)", CurrentValue = false, Callback = function(v) Settings.TargetBot = v end})
-CombatTab:CreateToggle({Name = "벽 체크 (보이는 적만)", CurrentValue = true, Callback = function(v) Settings.WallCheck = v end})
-CombatTab:CreateDropdown({Name = "타겟 부위 설정", Options = {"Head", "Torso", "Legs", "Random"}, CurrentOption = "Head", Callback = function(v) Settings.TargetPart = v end})
-CombatTab:CreateToggle({Name = "에임봇 팀 체크", CurrentValue = false, Flag = "TC", Callback = function(v) Settings.TeamCheck = v end})
-CombatTab:CreateToggle({Name = "에임봇 FOV 표시", CurrentValue = false, Flag = "SF", Callback = function(v) Settings.ShowFOV = v end})
-CombatTab:CreateSlider({Name = "FOV 크기", Range = {0, 1000}, Increment = 10, CurrentValue = 500, Flag = "FZ", Callback = function(v) Settings.FOVSize = v end})
-CombatTab:CreateSlider({Name = "에임 부드러움", Range = {1, 20}, Increment = 1, CurrentValue = 1, Flag = "AS", Callback = function(v) Settings.Smoothness = v end})
-CombatTab:CreateColorPicker({Name = "FOV 색상", Color = Color3.fromRGB(255, 0, 0), Flag = "FC", Callback = function(v) Settings.FOVColor = v end})
-CombatTab:CreateToggle({Name = "클릭 시 폭발", CurrentValue = false, Flag = "CE", Callback = function(v) Settings.ClickExplosion = v end})
-CombatTab:CreateSlider({Name = "폭발 범위", Range = {0, 100}, Increment = 1, CurrentValue = 15, Flag = "ER", Callback = function(v) Settings.ExplosionRadius = v end})
-CombatTab:CreateSlider({Name = "폭발 데미지", Range = {0, 100}, Increment = 1, CurrentValue = 100, Flag = "ED", Callback = function(v) Settings.ExplosionDamage = v end})
-
-VisualsTab:CreateToggle({Name = "박스 ESP", CurrentValue = false, Flag = "VB", Callback = function(v) Settings.BoxESP = v end})
-VisualsTab:CreateToggle({Name = "이름 ESP", CurrentValue = false, Flag = "VN", Callback = function(v) Settings.NameESP = v end})
-VisualsTab:CreateToggle({Name = "거리 ESP", CurrentValue = false, Flag = "VD", Callback = function(v) Settings.DistanceESP = v end})
-VisualsTab:CreateToggle({Name = "체력 ESP", CurrentValue = false, Flag = "VH", Callback = function(v) Settings.HealthESP = v end})
-VisualsTab:CreateToggle({Name = "무지개 ESP", CurrentValue = false, Callback = function(v) Settings.RainbowESP = v end})
-VisualsTab:CreateSlider({Name = "텍스트 크기", Range = {10, 30}, Increment = 1, CurrentValue = 16, Flag = "VS", Callback = function(v) Settings.ESPTextSize = v end})
-VisualsTab:CreateColorPicker({Name = "ESP 색상", Color = Color3.fromRGB(255, 0, 0), Flag = "VC", Callback = function(v) Settings.ESPColor = v end})
-
-PlayerTab:CreateSlider({Name = "줌 조절 (FOV)", Range = {1, 120}, Increment = 1, CurrentValue = 70, Callback = function(v) Settings.CameraFOV = v end})
-PlayerTab:CreateToggle({Name = "스핀 봇", CurrentValue = false, Callback = function(v) Settings.SpinBot = v end})
-PlayerTab:CreateToggle({Name = "강제 3인칭", CurrentValue = false, Callback = function(v) Settings.ThirdPerson = v end})
-PlayerTab:CreateToggle({Name = "이동속도 활성화", CurrentValue = false, Flag = "WSE", Callback = function(v) Settings.WalkSpeedEnabled = v end})
-PlayerTab:CreateSlider({Name = "속도 값", Range = {16, 500}, Increment = 1, CurrentValue = 50, Flag = "WSV", Callback = function(v) Settings.WalkSpeedValue = v end})
-PlayerTab:CreateToggle({Name = "플라이 (Fly)", CurrentValue = false, Flag = "FE", Callback = function(v) Settings.FlyEnabled = v end})
-PlayerTab:CreateSlider({Name = "비행 속도", Range = {0, 500}, Increment = 1, CurrentValue = 54, Flag = "FSV", Callback = function(v) Settings.FlySpeedValue = v end})
-PlayerTab:CreateToggle({Name = "무한 점프", CurrentValue = false, Flag = "IJ", Callback = function(v) Settings.InfJump = v end})
-PlayerTab:CreateToggle({Name = "점프 유지 (Hold Space)", CurrentValue = false, Flag = "HJ", Callback = function(v) Settings.HoldJump = v end})
-PlayerTab:CreateToggle({Name = "벽 뚫기 (Noclip)", CurrentValue = false, Flag = "NC", Callback = function(v) Settings.Noclip = v end})
 
 Rayfield:LoadConfiguration()
